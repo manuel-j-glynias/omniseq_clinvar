@@ -174,10 +174,10 @@ def main():
     logger.debug('calling uncompress_clinvar')
     uncompress_clinvar(gz,filename)
     os.remove(gz) 
-    client.drop_database('omniseq')
-    db = client.omniseq
-    collection = db.create_collection("clinvar")
-    parse_xml_file(filename,collection)
+#    client.drop_database('omniseq')
+#    db = client.omniseq
+#    collection = db.create_collection("clinvar")
+#    parse_xml_file(filename,collection)
     os.remove(filename) 
 
 
