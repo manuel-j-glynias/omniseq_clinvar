@@ -9,4 +9,3 @@ echo 'calling clinvar.py'
 python3 clinvar.py
 echo 'back from clinvar.py'
 
-flask run
