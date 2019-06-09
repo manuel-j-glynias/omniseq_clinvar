@@ -41,9 +41,12 @@ def index():
 
 @app.route("/omniseq_api/v1/by_pdot/", methods=['GET'])
 def handle_pdot():
+    logger.debug("handle_pdot")
     myDict = {'explain':'Error!'}
     gene = request.args.get('gene', None) # use default value repalce 'None'
+    logger.debug(gene)
     pdot = request.args.get('pDot', None)
+    logger.debug(pdot)
     if (gene!=None and pdot!=None):
         myquery = { 'gene':gene, 'pDot':pdot}
         mydoc = mycol.find_one(myquery)
@@ -83,3 +86,6 @@ def handle_shouldReport():
             myDict = {'shouldReport':mydoc['shouldReport']}
 
     return jsonify(myDict)
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0')
