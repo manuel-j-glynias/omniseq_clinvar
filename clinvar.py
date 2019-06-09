@@ -161,28 +161,28 @@ def parse_xml_file(path,collection):
        
         
 def main():
-#    logger.debug('calling MongoClient')
-#    client = MongoClient('localhost', 27017)
-#    
-#    try:
-#    # The ismaster command is cheap and does not require auth.
-#        client.admin.command('ismaster')
-#    except ConnectionFailure:
-#        logger.debug("Server not available, exiting")
-#        sys.exit()
-#  
+    logger.debug('calling MongoClient')
+    client = MongoClient('localhost', 27017)
+    
+    try:
+    # The ismaster command is cheap and does not require auth.
+        client.admin.command('ismaster')
+    except ConnectionFailure:
+        logger.debug("Server not available, exiting")
+        sys.exit()
+  
     filename = 'ClinVarVariationRelease_00-latest.xml'
-    gz = filename + '.gz'
-    logger.debug('calling clinvar_fetcher')
-    clinvar_fetcher(gz)
-    logger.debug('calling uncompress_clinvar')
-    uncompress_clinvar(gz,filename)
-    os.remove(gz) 
-#    client.drop_database('omniseq')
-#    db = client.omniseq
-#    collection = db.create_collection("clinvar")
-#    parse_xml_file(filename,collection)
-#    os.remove(filename) 
+#    gz = filename + '.gz'
+#    logger.debug('calling clinvar_fetcher')
+#    clinvar_fetcher(gz)
+#    logger.debug('calling uncompress_clinvar')
+#    uncompress_clinvar(gz,filename)
+#    os.remove(gz) 
+    client.drop_database('omniseq')
+    db = client.omniseq
+    collection = db.create_collection("clinvar")
+    parse_xml_file(filename,collection)
+    os.remove(filename) 
 
 
 main()
