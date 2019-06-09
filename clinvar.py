@@ -7,9 +7,16 @@ Created on Mon Jun  3 16:47:53 2019
 """
 import xml.etree.ElementTree as ET
 from pymongo import MongoClient
+from pymongo.errors import ConnectionFailure
 from ftplib import FTP
 import gzip
 import os
+import logging
+import sys
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
 
 # =============================================================================
 # def convertPDot(pDot):
@@ -136,19 +143,30 @@ def parse_xml_file(path,collection):
                 _ = collection.insert_one(post_data)
                 counter += 1
                 if (counter % 1000 ==0):
-                    print(counter, post_data['gene'], post_data['cDot'])
+                    message = str(counter) + post_data['gene'], post_data['cDot']
+                    logger.debug(message)
 #                print('One post: {0}'.format(result.inserted_id))
                 elem.clear() # discard the element
        
         
 def main():
+    logger.debug('calling MongoClient')
+    client = MongoClient('localhost', 27017)
+    
+    try:
+    # The ismaster command is cheap and does not require auth.
+        client.admin.command('ismaster')
+    except ConnectionFailure:
+        logger.debug("Server not available, exiting")
+        sys.exit()
+  
     filename = 'ClinVarVariationRelease_00-latest.xml'
     gz = filename + '.gz'
+    logger.debug('calling clinvar_fetcher')
     clinvar_fetcher(gz)
+    logger.debug('calling uncompress_clinvar')
     uncompress_clinvar(gz,filename)
     os.remove(gz) 
-
-    client = MongoClient('localhost', 27017)
     client.drop_database('omniseq')
     db = client.omniseq
     collection = db.create_collection("clinvar")
