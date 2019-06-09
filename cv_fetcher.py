@@ -34,4 +34,6 @@ def main():
     filename = 'ClinVarVariationRelease_00-latest.xml.gz'
     logger.debug('calling clinvar_fetcher')
     clinvar_fetcher(filename)
-    logger.debug('calling uncompress_clinvar')
+    logger.debug('back from clinvar_fetcher')
+
+main()
