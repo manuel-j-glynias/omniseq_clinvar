@@ -56,15 +56,15 @@ def clinvar_fetcher(filename):
 
 def uncompress_clinvar(filename,outfilename):
     try:
-        inF = gzip.open(filename, 'rb')
         outF = open(outfilename, 'wb')
-        outF.write( inF.read() )
-        inF.close()
+ 
+        with gzip.open(filename, 'rb') as f:
+            outF.write( f.read() )
+        f.close()
         outF.close()
     except:  
         message = "Unexpected error:" + sys.exc_info()[0]
         logger.debug(message)
-
 
 def get_cDot(variantName):
   if (len(variantName)>0 and ':' in variantName):
@@ -182,7 +182,7 @@ def main():
 #    db = client.omniseq
 #    collection = db.create_collection("clinvar")
 #    parse_xml_file(filename,collection)
-    os.remove(filename) 
+#    os.remove(filename) 
 
 
 main()
