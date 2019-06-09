@@ -41,13 +41,18 @@ logger.setLevel(logging.DEBUG)
 
 
 def clinvar_fetcher(filename):
-    ftp = FTP('ftp.ncbi.nlm.nih.gov')
-    ftp.login() 
-    ftp.cwd('pub/clinvar/xml/clinvar_variation') 
-    localfile = open(filename, 'wb')
-    ftp.retrbinary('RETR ' + filename, localfile.write, 1024)
-    ftp.quit()
-    localfile.close()
+    try:
+        ftp = FTP('ftp.ncbi.nlm.nih.gov')
+        ftp.login() 
+        ftp.cwd('pub/clinvar/xml/clinvar_variation') 
+        localfile = open(filename, 'wb')
+        ftp.retrbinary('RETR ' + filename, localfile.write, 1024)
+        ftp.quit()
+        localfile.close()
+    except:  
+        message = "Unexpected error:" + sys.exc_info()[0]
+        logger.debug(message)
+    
 
 def uncompress_clinvar(filename,outfilename):
     inF = gzip.open(filename, 'rb')
