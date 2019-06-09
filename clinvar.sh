@@ -8,5 +8,5 @@ echo 'back from mongod'
 echo 'calling clinvar.py'
 python3 clinvar.py
 echo 'back from clinvar.py'
-export FLASK_APP=cv_server.py
+
 flask run

@@ -8,10 +8,28 @@ Created on Tue Jun  4 06:07:58 2019
 
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
+from pymongo.errors import ConnectionFailure
+
 import urllib.parse
+import logging
+import sys
+
+logging.basicConfig()
+logger = logging.getLogger(__name__)
+logger.setLevel(logging.DEBUG)
+
 
 app = Flask(__name__)
+logger.debug('calling MongoClient')
 client = MongoClient('localhost', 27017)
+    
+try:
+    # The ismaster command is cheap and does not require auth.
+    client.admin.command('ismaster')
+except ConnectionFailure:
+    logger.debug("Server not available, exiting")
+    sys.exit()
+ 
 db = client.omniseq
 mycol = db["clinvar"]
 
