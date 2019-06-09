@@ -157,16 +157,16 @@ def parse_xml_file(path,collection):
        
         
 def main():
-    logger.debug('calling MongoClient')
-    client = MongoClient('localhost', 27017)
-    
-    try:
-    # The ismaster command is cheap and does not require auth.
-        client.admin.command('ismaster')
-    except ConnectionFailure:
-        logger.debug("Server not available, exiting")
-        sys.exit()
-  
+#    logger.debug('calling MongoClient')
+#    client = MongoClient('localhost', 27017)
+#    
+#    try:
+#    # The ismaster command is cheap and does not require auth.
+#        client.admin.command('ismaster')
+#    except ConnectionFailure:
+#        logger.debug("Server not available, exiting")
+#        sys.exit()
+#  
     filename = 'ClinVarVariationRelease_00-latest.xml'
     gz = filename + '.gz'
     logger.debug('calling clinvar_fetcher')
