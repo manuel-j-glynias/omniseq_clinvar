@@ -55,11 +55,15 @@ def clinvar_fetcher(filename):
     
 
 def uncompress_clinvar(filename,outfilename):
-    inF = gzip.open(filename, 'rb')
-    outF = open(outfilename, 'wb')
-    outF.write( inF.read() )
-    inF.close()
-    outF.close()
+    try:
+        inF = gzip.open(filename, 'rb')
+        outF = open(outfilename, 'wb')
+        outF.write( inF.read() )
+        inF.close()
+        outF.close()
+    except:  
+        message = "Unexpected error:" + sys.exc_info()[0]
+        logger.debug(message)
 
 
 def get_cDot(variantName):
