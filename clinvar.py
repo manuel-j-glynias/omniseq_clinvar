@@ -152,9 +152,9 @@ def parse_xml_file(path,collection):
                 _ = collection.insert_one(post_data)
                 counter += 1
  #               if (counter % 1000 ==0):
-                message = str(counter) + post_data['gene'] + post_data['cDot'] + post_data['pDot']
+                message = str(counter) + ' ' + post_data['gene'] + ' ' + post_data['cDot'] + ' ' + post_data['pDot']
                 logger.debug(message)
-                if (counter % 1000 ==0):
+                if (counter % 10000 ==0):
                     break
 #                print('One post: {0}'.format(result.inserted_id))
                 elem.clear() # discard the element
