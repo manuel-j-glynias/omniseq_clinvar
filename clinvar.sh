@@ -1,7 +1,10 @@
 #!/bin/sh
 echo 'hello from clinvar.sh'
+echo 'calling cv_fetcher.py'
+python3 cv_fetcher.py
+echo 'back from cv_fetcher.py'
 echo 'calling gunzip'
-gunzip -v ClinVarVariationRelease_00-latest.xml.gz
+gunzip -v *.gz
 echo 'back from gunzip'
 export LC_ALL=C.UTF-8
 export LANG=C.UTF-8
