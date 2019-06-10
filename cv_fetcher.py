@@ -27,13 +27,13 @@ def clinvar_fetcher(filename):
         localfile.close()
     except:  
         message = "Unexpected error:" + sys.exc_info()[0]
-        logger.debug(message)
+        logger.critical(message)
 
 
 def main():
     filename = 'ClinVarVariationRelease_00-latest.xml.gz'
-    logger.debug('calling clinvar_fetcher')
+    logger.debug('fetching file from ftp site')
     clinvar_fetcher(filename)
-    logger.debug('back from clinvar_fetcher')
+    logger.debug('done with ftp')
 
 main()

@@ -9,7 +9,6 @@ Created on Tue Jun  4 06:07:58 2019
 from flask import Flask, request, jsonify
 from pymongo import MongoClient
 from pymongo.errors import ConnectionFailure
-
 import urllib.parse
 import logging
 import sys
@@ -24,10 +23,10 @@ logger.debug('calling MongoClient')
 client = MongoClient('localhost', 27017)
     
 try:
-    # The ismaster command is cheap and does not require auth.
+    # inexpensive way to determine if mongo is up, if not then exit
     client.admin.command('ismaster')
 except ConnectionFailure:
-    logger.debug("Server not available, exiting")
+    logger.critical("Server not available, exiting")
     sys.exit()
  
 db = client.omniseq
@@ -53,7 +52,7 @@ def handle_pdot():
         if (mydoc != None):
             myDict = {'gene': mydoc['gene'], 'cDot': mydoc['cDot'], 'pDot': mydoc['pDot'],
                       'significance': mydoc['significance'], 'explain': mydoc['explain'],
-                      'shouldReport':mydoc['shouldReport']}
+                      'shouldReport':mydoc['shouldReport'], 'isPathogenic':mydoc['isPathogenic']}
 
     return jsonify(myDict)
  
@@ -69,7 +68,7 @@ def handle_cdot():
         if (mydoc != None):
             myDict = {'gene': mydoc['gene'], 'cDot': mydoc['cDot'], 'pDot': mydoc['pDot'],
                       'significance': mydoc['significance'], 'explain': mydoc['explain'],
-                      'shouldReport':mydoc['shouldReport']}
+                      'shouldReport':mydoc['shouldReport'], 'isPathogenic':mydoc['isPathogenic']}
 
     return jsonify(myDict)
 
@@ -83,7 +82,21 @@ def handle_shouldReport():
         myquery = { 'gene':gene, 'pDot':pdot}
         mydoc = mycol.find_one(myquery)
         if (mydoc != None):
-            myDict = {'shouldReport':mydoc['shouldReport']}
+            myDict = {'shouldReport':mydoc['shouldReport'], 'explain': mydoc['explain']}
+
+    return jsonify(myDict)
+
+
+@app.route("/omniseq_api/v1/isPathogenic/", methods=['GET'])
+def handle_isPathogenic():
+    myDict = {'explain':'Error!'}
+    gene = request.args.get('gene', None) # use default value repalce 'None'
+    pdot = request.args.get('pDot', None)
+    if (gene!=None and pdot!=None):
+        myquery = { 'gene':gene, 'pDot':pdot}
+        mydoc = mycol.find_one(myquery)
+        if (mydoc != None):
+            myDict = {'isPathogenic':mydoc['isPathogenic'], 'explain': mydoc['explain']}
 
     return jsonify(myDict)
 
