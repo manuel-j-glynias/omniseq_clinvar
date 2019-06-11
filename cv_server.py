@@ -37,6 +37,23 @@ def index():
     myDict = {'explain':'Server Works!'}
     return jsonify(myDict)
   
+@app.route("/omniseq_api/v1/by_cdot/", methods=['GET'])
+def handle_cdot():
+    myDict = {'explain':'Error!'}
+    gene = request.args.get('gene', None) # use default value repalce 'None'
+    cdot = urllib.parse.unquote(request.args.get('cDot', None))
+    if (gene!=None and cdot!=None):
+        myquery = { 'gene':gene, 'cDot':cdot}
+        mydoc = mycol.find_one(myquery)
+        if (mydoc != None):
+            myDict = {'gene': mydoc['gene'], 'cDot': mydoc['cDot'], 'pDot': mydoc['pDot'],
+                      'significance': mydoc['significance'], 'explain': mydoc['explain'],
+                      'shouldReport':mydoc['shouldReport'], 'isPathogenic':mydoc['isPathogenic']}
+
+    return jsonify(myDict)
+
+
+
 
 @app.route("/omniseq_api/v1/by_pdot/", methods=['GET'])
 def handle_pdot():
@@ -57,20 +74,6 @@ def handle_pdot():
     return jsonify(myDict)
  
 
-@app.route("/omniseq_api/v1/by_cdot/", methods=['GET'])
-def handle_cdot():
-    myDict = {'explain':'Error!'}
-    gene = request.args.get('gene', None) # use default value repalce 'None'
-    cdot = urllib.parse.unquote(request.args.get('cDot', None))
-    if (gene!=None and cdot!=None):
-        myquery = { 'gene':gene, 'cDot':cdot}
-        mydoc = mycol.find_one(myquery)
-        if (mydoc != None):
-            myDict = {'gene': mydoc['gene'], 'cDot': mydoc['cDot'], 'pDot': mydoc['pDot'],
-                      'significance': mydoc['significance'], 'explain': mydoc['explain'],
-                      'shouldReport':mydoc['shouldReport'], 'isPathogenic':mydoc['isPathogenic']}
-
-    return jsonify(myDict)
 
 
 @app.route("/omniseq_api/v1/shouldReport/", methods=['GET'])
@@ -81,7 +84,10 @@ def handle_shouldReport():
     if (gene!=None and pdot!=None):
         myquery = { 'gene':gene, 'pDot':pdot}
         mydoc = mycol.find_one(myquery)
-        if (mydoc != None):
+        # We want to report any variant not found in ClinVar
+        if (mydoc == None):
+            myDict = {'shouldReport':True, 'explain': 'pDot not found in ClinVar'}
+        else:
             myDict = {'shouldReport':mydoc['shouldReport'], 'explain': mydoc['explain']}
 
     return jsonify(myDict)
