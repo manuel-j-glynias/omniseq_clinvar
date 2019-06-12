@@ -48,7 +48,7 @@ def handle_cdot():
         if (mydoc != None):
             myDict = {'gene': mydoc['gene'], 'cDot': mydoc['cDot'], 'pDot': mydoc['pDot'],
                       'significance': mydoc['significance'], 'explain': mydoc['explain'],
-                      'shouldReport':mydoc['shouldReport'], 'isPathogenic':mydoc['isPathogenic']}
+                      'shouldReport':mydoc['shouldReport'], 'isPathogenic':mydoc['isPathogenic'], 'isBenign':mydoc['isBenign']}
 
     return jsonify(myDict)
 
@@ -69,7 +69,7 @@ def handle_pdot():
         if (mydoc != None):
             myDict = {'gene': mydoc['gene'], 'cDot': mydoc['cDot'], 'pDot': mydoc['pDot'],
                       'significance': mydoc['significance'], 'explain': mydoc['explain'],
-                      'shouldReport':mydoc['shouldReport'], 'isPathogenic':mydoc['isPathogenic']}
+                      'shouldReport':mydoc['shouldReport'], 'isPathogenic':mydoc['isPathogenic'], 'isBenign':mydoc['isBenign']}
 
     return jsonify(myDict)
  
@@ -103,6 +103,20 @@ def handle_isPathogenic():
         mydoc = mycol.find_one(myquery)
         if (mydoc != None):
             myDict = {'isPathogenic':mydoc['isPathogenic'], 'explain': mydoc['explain']}
+
+    return jsonify(myDict)
+
+
+@app.route("/omniseq_api/v1/isBenign/", methods=['GET'])
+def handle_isBenign():
+    myDict = {'explain':'Error!'}
+    gene = request.args.get('gene', None) # use default value repalce 'None'
+    pdot = request.args.get('pDot', None)
+    if (gene!=None and pdot!=None):
+        myquery = { 'gene':gene, 'pDot':pdot}
+        mydoc = mycol.find_one(myquery)
+        if (mydoc != None):
+            myDict = {'isBenign':mydoc['isBenign'], 'explain': mydoc['explain']}
 
     return jsonify(myDict)
 

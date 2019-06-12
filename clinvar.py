@@ -46,24 +46,34 @@ def getCount(sigDict,key):
         count = sigDict[key]
     return count
     
-    
-def get_shouldReport(sigDict):
-    shouldReport = False
+
+def getAllCounts(sigDict):
     pathogenic = getCount(sigDict,'pathogenic') + getCount(sigDict,'likely pathogenic') + getCount(sigDict,'drug response')
     benign = getCount(sigDict,'benign') + getCount(sigDict,'likely benign')
     uncertain = getCount(sigDict,'uncertain significance')
+    return pathogenic, benign,  uncertain
+    
+    
+def get_shouldReport(sigDict):
+    shouldReport = False
+    pathogenic, benign,  uncertain = getAllCounts(sigDict)
     if (pathogenic + uncertain >= benign):
         shouldReport = True
     return shouldReport
  
 def get_isPathogenic(sigDict):
     isPathogenic = False
-    pathogenic = getCount(sigDict,'pathogenic') + getCount(sigDict,'likely pathogenic') + getCount(sigDict,'drug response')
-    benign = getCount(sigDict,'benign') + getCount(sigDict,'likely benign')
-    uncertain = getCount(sigDict,'uncertain significance')
+    pathogenic, benign,  uncertain = getAllCounts(sigDict)
     if (pathogenic  >= benign + uncertain):
         isPathogenic = True
     return isPathogenic
+ 
+def get_isBenign(sigDict):
+    isBenign = False
+    pathogenic, benign,  uncertain = getAllCounts(sigDict)
+    if (benign  >= pathogenic + uncertain):
+        isBenign = True
+    return isBenign
     
 
 def getOneVariant(variationArchive):
@@ -74,8 +84,9 @@ def getOneVariant(variationArchive):
     'significance':'',
     'explain':'',
     'shouldReport': False,
-    'isPathogenic': False
-    }
+    'isPathogenic': False,
+    'isBenign': False
+   }
     variantName = ''
     sigs = {}
     for gene in variationArchive.iter('Gene'):
@@ -98,6 +109,7 @@ def getOneVariant(variationArchive):
     
     post_data['shouldReport'] = get_shouldReport(sigs)
     post_data['isPathogenic'] = get_isPathogenic(sigs)
+    post_data['isBenign'] = get_isBenign(sigs)
        
     return post_data
 
