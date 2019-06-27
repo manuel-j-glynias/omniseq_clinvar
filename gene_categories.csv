@@ -1,0 +1,145 @@
+gene,category
+ABL1,Oncogene
+ACVRL1,Oncogene
+AKT1,Oncogene
+AKT3,Fusion Panel Gene
+ALK,Oncogene
+APC,Tumor Suppressor Gene
+APEX1,Oncogene
+AR,Oncogene
+ARAF,Oncogene
+ATM,Tumor Suppressor Gene
+ATP11B,Oncogene
+AXL,Fusion Panel Gene
+BAP1,Tumor Suppressor Gene
+BCL2L1,Oncogene
+BCL9,Oncogene
+BIRC2,Oncogene
+BIRC3,Oncogene
+BRAF,Oncogene
+BRCA1,Tumor Suppressor Gene
+BRCA2,Tumor Suppressor Gene
+BTK,Oncogene
+CBL,Oncogene
+CCND1,Oncogene
+CCNE1,Oncogene
+CD274,Oncogene
+CD44,Oncogene
+CDH1,Tumor Suppressor Gene
+CDK4,Oncogene
+CDK6,Oncogene
+CDKN2A,Tumor Suppressor Gene
+CHEK2,Oncogene
+CSF1R,Oncogene
+CSNK2A1,Oncogene
+CTNNB1,Oncogene
+DCUN1D1,Oncogene
+DDR2,Oncogene
+DNMT3A,Oncogene
+EGFR,Oncogene
+ERBB2,Oncogene
+ERBB3,Oncogene
+ERBB4,Oncogene
+ERG,Fusion Panel Gene
+ESR1,Oncogene
+ETV1,Fusion Panel Gene
+ETV4,Fusion Panel Gene
+ETV5,Fusion Panel Gene
+EZH2,Oncogene
+FBXW7,Tumor Suppressor Gene
+FGFR1,Oncogene
+FGFR2,Oncogene
+FGFR3,Oncogene
+FGFR4,Oncogene
+FLT3,Oncogene
+FOXL2,Oncogene
+GAS6,Oncogene
+GATA2,Oncogene
+GATA3,Tumor Suppressor Gene
+GNA11,Oncogene
+GNAQ,Oncogene
+GNAS,Oncogene
+HNF1A,Oncogene
+HRAS,Oncogene
+IDH1,Oncogene
+IDH2,Oncogene
+IFITM1,Oncogene
+IFITM3,Oncogene
+IGF1R,Oncogene
+IL6,Oncogene
+JAK1,Oncogene
+JAK2,Oncogene
+JAK3,Oncogene
+KDR,Oncogene
+KIT,Oncogene
+KNSTRN,Oncogene
+KRAS,Oncogene
+MAGOH,Oncogene
+MAP2K1,Oncogene
+MAP2K2,Oncogene
+MAPK1,Oncogene
+MAX,Oncogene
+MCL1,Oncogene
+MDM2,Oncogene
+MDM4,Oncogene
+MED12,Oncogene
+MET,Oncogene
+MLH1,Oncogene
+MPL,Oncogene
+MSH2,Tumor Suppressor Gene
+MTOR,Oncogene
+MYC,Oncogene
+MYCL,Oncogene
+MYCN,Oncogene
+MYD88,Oncogene
+MYO18A,Oncogene
+NF1,Tumor Suppressor Gene
+NF2,Tumor Suppressor Gene
+NFE2L2,Oncogene
+NKX2-1,Oncogene
+NKX2-8,Oncogene
+NOTCH1,Tumor Suppressor Gene
+NPM1,Oncogene
+NRAS,Oncogene
+NTRK1,Fusion Panel Gene
+NTRK2,Fusion Panel Gene
+NTRK3,Fusion Panel Gene
+PAX5,Oncogene
+PDCD1LG2,Oncogene
+PDGFRA,Oncogene
+PIK3CA,Oncogene
+PIK3R1,Tumor Suppressor Gene
+PNP,Oncogene
+PPARG,Oncogene
+PPP2R1A,Oncogene
+PTCH1,Tumor Suppressor Gene
+PTEN,Tumor Suppressor Gene
+PTPN11,Oncogene
+RAC1,Oncogene
+RAF1,Oncogene
+RB1,Tumor Suppressor Gene
+RET,Oncogene
+RHEB,Oncogene
+RHOA,Oncogene
+ROS1,Fusion Panel Gene
+RPS6KB1,Oncogene
+SF3B1,Oncogene
+SMAD4,Tumor Suppressor Gene
+SMARCB1,Tumor Suppressor Gene
+SMO,Oncogene
+SOX2,Oncogene
+SPOP,Oncogene
+SRC,Oncogene
+STAT3,Oncogene
+STK11,Tumor Suppressor Gene
+TERT,Oncogene
+TET2,Tumor Suppressor Gene
+TIAF1,Oncogene
+TP53,Tumor Suppressor Gene
+TSC1,Tumor Suppressor Gene
+TSC2,Tumor Suppressor Gene
+U2AF1,Oncogene
+VHL,Tumor Suppressor Gene
+WT1,Tumor Suppressor Gene
+XPO1,Oncogene
+ZNF217,Oncogene

@@ -13,112 +13,68 @@ import urllib.parse
 import logging
 import sys
 
+
+app = Flask(__name__)
 logging.basicConfig()
 logger = logging.getLogger(__name__)
 logger.setLevel(logging.DEBUG)
 
-
-app = Flask(__name__)
 logger.debug('calling MongoClient')
 client = MongoClient('localhost', 27017)
-    
 try:
     # inexpensive way to determine if mongo is up, if not then exit
     client.admin.command('ismaster')
 except ConnectionFailure:
     logger.critical("Server not available, exiting")
     sys.exit()
- 
+
 db = client.omniseq
-mycol = db["clinvar"]
+
 
 @app.route('/')
 def index():
     myDict = {'explain':'Server Works!'}
     return jsonify(myDict)
   
-@app.route("/omniseq_api/v1/by_cdot/", methods=['GET'])
-def handle_cdot():
-    myDict = {'explain':'Error!'}
-    gene = request.args.get('gene', None) # use default value repalce 'None'
-    cdot = urllib.parse.unquote(request.args.get('cDot', None))
-    if (gene!=None and cdot!=None):
-        myquery = { 'gene':gene, 'cDot':cdot}
-        mydoc = mycol.find_one(myquery)
-        if (mydoc != None):
-            myDict = {'gene': mydoc['gene'], 'cDot': mydoc['cDot'], 'pDot': mydoc['pDot'],
-                      'significance': mydoc['significance'], 'explain': mydoc['explain'],
-                      'shouldReport':mydoc['shouldReport'], 'isPathogenic':mydoc['isPathogenic'], 'isBenign':mydoc['isBenign']}
 
-    return jsonify(myDict)
-
-
-
-
-@app.route("/omniseq_api/v1/by_pdot/", methods=['GET'])
-def handle_pdot():
-    logger.debug("handle_pdot")
-    myDict = {'explain':'Error!'}
-    gene = request.args.get('gene', None) # use default value repalce 'None'
-    logger.debug(gene)
-    pdot = request.args.get('pDot', None)
-    logger.debug(pdot)
-    if (gene!=None and pdot!=None):
-        myquery = { 'gene':gene, 'pDot':pdot}
-        mydoc = mycol.find_one(myquery)
-        if (mydoc != None):
-            myDict = {'gene': mydoc['gene'], 'cDot': mydoc['cDot'], 'pDot': mydoc['pDot'],
-                      'significance': mydoc['significance'], 'explain': mydoc['explain'],
-                      'shouldReport':mydoc['shouldReport'], 'isPathogenic':mydoc['isPathogenic'], 'isBenign':mydoc['isBenign']}
-
-    return jsonify(myDict)
- 
-
-
+def is_oncogene(gene):
+    mycol = db["gene_categories"]
+    myquery = { 'gene':gene }
+    mydoc = mycol.find_one(myquery)
+    b = False
+    if mydoc!= None:
+        if mydoc['category'] == 'Oncogene':
+            b = True
+    return b
+        
+    
 
 @app.route("/omniseq_api/v1/shouldReport/", methods=['GET'])
 def handle_shouldReport():
     myDict = {'explain':'Error!'}
     gene = request.args.get('gene', None) # use default value repalce 'None'
     pdot = request.args.get('pDot', None)
-    if (gene!=None and pdot!=None):
+    if (gene != None and pdot != None):
+        mycol = db["clinvar"]
         myquery = { 'gene':gene, 'pDot':pdot}
         mydoc = mycol.find_one(myquery)
-        # We want to report any variant not found in ClinVar
+        # We want to report any oncogene variant not found in ClinVar
         if (mydoc == None):
-            myDict = {'shouldReport':True, 'explain': 'pDot not found in ClinVar'}
+            # is this an oncogene?
+            if is_oncogene(gene):
+                myDict = {'shouldReport':True, 'explain': 'pDot not found in ClinVar, and gene is oncogene'}
+            else:
+                myDict = {'shouldReport':False, 'explain': 'pDot not found in ClinVar, and gene not oncogene'}
         else:
-            myDict = {'shouldReport':mydoc['shouldReport'], 'explain': mydoc['explain']}
+            myDict = {'shouldReport':mydoc['is_majority_vote_not_benign'], 'explain': mydoc['explain'], 'variant_id' : mydoc['variant_id']}
 
     return jsonify(myDict)
 
 
-@app.route("/omniseq_api/v1/isPathogenic/", methods=['GET'])
-def handle_isPathogenic():
-    myDict = {'explain':'Error!'}
-    gene = request.args.get('gene', None) # use default value repalce 'None'
-    pdot = request.args.get('pDot', None)
-    if (gene!=None and pdot!=None):
-        myquery = { 'gene':gene, 'pDot':pdot}
-        mydoc = mycol.find_one(myquery)
-        if (mydoc != None):
-            myDict = {'isPathogenic':mydoc['isPathogenic'], 'explain': mydoc['explain']}
-
-    return jsonify(myDict)
 
 
-@app.route("/omniseq_api/v1/isBenign/", methods=['GET'])
-def handle_isBenign():
-    myDict = {'explain':'Error!'}
-    gene = request.args.get('gene', None) # use default value repalce 'None'
-    pdot = request.args.get('pDot', None)
-    if (gene!=None and pdot!=None):
-        myquery = { 'gene':gene, 'pDot':pdot}
-        mydoc = mycol.find_one(myquery)
-        if (mydoc != None):
-            myDict = {'isBenign':mydoc['isBenign'], 'explain': mydoc['explain']}
-
-    return jsonify(myDict)
-
+    
+    
 if __name__ == "__main__":
     app.run(host='0.0.0.0')
+    
