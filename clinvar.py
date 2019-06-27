@@ -74,7 +74,7 @@ def getCount(sigDict,key):
 
 def getAllCounts(sigDict):
     pathogenic = getCount(sigDict,'pathogenic') + getCount(sigDict,'likely pathogenic') + getCount(sigDict,'drug response')
-    benign = getCount(sigDict,'benign') + getCount(sigDict,'likely benign') + getCount('no known pathogenicity')
+    benign = getCount(sigDict,'benign') + getCount(sigDict,'likely benign') + getCount(sigDict,'no known pathogenicity')
     uncertain = getCount(sigDict,'uncertain significance')
     return pathogenic, benign,  uncertain
     
